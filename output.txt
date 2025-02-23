@@ -1,0 +1,439 @@
+
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text-Based Social Media</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>TextVerse</h1>
+        <nav>
+            <button id="create-post-btn">New Post</button>
+            <button id="view-stories-btn">Stories</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="newsfeed">
+            <!-- Posts will be dynamically added here -->
+        </section>
+
+        <section id="stories" style="display: none;">
+            <!-- Stories will be dynamically added here -->
+            <button id="close-stories-btn">Close Stories</button>
+        </section>
+
+        <div id="create-post-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <h2>Create New Post</h2>
+                <textarea id="post-content" placeholder="Write your post..."></textarea>
+                <div id="emoji-picker">
+                    <!-- Emojis will be added here -->
+                </div>
+                <button id="add-emoji-btn">Add Emoji</button>
+                <button id="submit-post-btn">Post</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 TextVerse</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+css
+/* styles.css */
+body {
+    font-family: sans-serif;
+    background-color: #0a192f; /* Dark Blue */
+    color: #ccd6f6; /* Light Gray */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #112240;
+    padding: 1rem;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    color: #ffffff;
+}
+
+nav button {
+    background-color: #172a45;
+    color: #ccd6f6;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+nav button:hover {
+    background-color: #233554;
+}
+
+main {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto; /* Enable scrolling for the main content */
+}
+
+#newsfeed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.post {
+    background-color: #112240;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.post:hover {
+    transform: translateY(-2px);
+}
+
+.post-content {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.post-timestamp {
+    font-size: 0.8rem;
+    color: #8892b0;
+}
+
+#stories {
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.story {
+    background-color: #112240;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    max-width: 80%;
+    text-align: center;
+    animation: fadeInOut 5s linear forwards; /* Example animation */
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    10%, 90% { opacity: 1; }
+}
+
+#close-stories-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: #172a45;
+    color: #ccd6f6;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+#close-stories-btn:hover{
+    background-color: #233554;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #112240;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#post-content {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #8892b0;
+    background-color: #172a45;
+    color: #ccd6f6;
+    resize: vertical;
+}
+
+#submit-post-btn, #add-emoji-btn {
+    background-color: #172a45;
+    color: #ccd6f6;
+    border: none;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 0.5rem;
+}
+#submit-post-btn:hover, #add-emoji-btn:hover{
+    background-color: #233554;
+}
+
+#emoji-picker {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 300px; /* Adjust as needed */
+    margin-bottom: 10px;
+    display: none;
+}
+
+.emoji {
+    font-size: 1.5rem;
+    margin: 0.2rem;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #112240;
+    padding: 1rem;
+    text-align: center;
+    margin-top: auto; /* Push footer to the bottom */
+}
+
+footer p {
+    margin: 0;
+    color: #ffffff;
+}
+
+
+javascript
+/* script.js */
+document.addEventListener('DOMContentLoaded', () => {
+    const newsfeed = document.getElementById('newsfeed');
+    const storiesSection = document.getElementById('stories');
+    const createPostBtn = document.getElementById('create-post-btn');
+    const viewStoriesBtn = document.getElementById('view-stories-btn');
+    const closeStoriesBtn = document.getElementById('close-stories-btn');
+    const createPostModal = document.getElementById('create-post-modal');
+    const submitPostBtn = document.getElementById('submit-post-btn');
+    const postContentInput = document.getElementById('post-content');
+    const closeBtn = document.querySelector('.close-btn');
+    const addEmojiBtn = document.getElementById('add-emoji-btn');
+    const emojiPicker = document.getElementById('emoji-picker');
+
+    let loading = false;
+    let page = 0;
+    const limit = 10; // Number of posts to load per page
+
+    // --- Emoji Picker ---
+    const emojis = ['😀', '😂', '🤣', '😊', '😍', '👍', '🙌', '🎉', '🍕', '🚀']; // Add more emojis
+
+    function populateEmojiPicker() {
+        emojis.forEach(emoji => {
+            const emojiSpan = document.createElement('span');
+            emojiSpan.classList.add('emoji');
+            emojiSpan.textContent = emoji;
+            emojiSpan.addEventListener('click', () => {
+                postContentInput.value += emoji;
+            });
+            emojiPicker.appendChild(emojiSpan);
+        });
+    }
+
+    populateEmojiPicker();
+
+    addEmojiBtn.addEventListener('click', () => {
+        emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'flex' : 'none';
+    });
+
+
+    // --- Post Creation ---
+    createPostBtn.addEventListener('click', () => {
+        createPostModal.style.display = 'block';
+    });
+
+    closeBtn.addEventListener('click', () => {
+        createPostModal.style.display = 'none';
+        emojiPicker.style.display = 'none'; // Hide emoji picker when closing modal
+    });
+
+    submitPostBtn.addEventListener('click', () => {
+        const postContent = postContentInput.value.trim();
+        if (postContent) {
+            createPost(postContent);
+            postContentInput.value = '';
+            createPostModal.style.display = 'none';
+            emojiPicker.style.display = 'none'; // Hide emoji picker after posting
+        }
+    });
+
+    function createPost(content) {
+        const postDiv = document.createElement('div');
+        postDiv.classList.add('post');
+        postDiv.innerHTML = `
+            <p class="post-content">${content}</p>
+            <p class="post-timestamp">${new Date().toLocaleString()}</p>
+        `;
+        newsfeed.insertBefore(postDiv, newsfeed.firstChild); // Add new posts to the top
+    }
+
+
+    // --- Stories ---
+    viewStoriesBtn.addEventListener('click', () => {
+        storiesSection.style.display = 'flex';
+        loadStories();
+    });
+
+    closeStoriesBtn.addEventListener('click', () => {
+        storiesSection.style.display = 'none';
+        clearStories();
+    });
+
+    function loadStories() {
+        // Simulate fetching stories (replace with actual API call)
+        const dummyStories = [
+            "This is a short story!",
+            "Another story here...",
+            "Yet another story.",
+            "Stories are ephemeral!",
+            "Last story for now."
+        ];
+
+        dummyStories.forEach(storyText => {
+            const storyDiv = document.createElement('div');
+            storyDiv.classList.add('story');
+            storyDiv.textContent = storyText;
+            storiesSection.appendChild(storyDiv);
+
+            // Remove the story after a delay (simulating timed visibility)
+            setTimeout(() => {
+                storyDiv.remove();
+            }, 5000); // 5 seconds
+        });
+    }
+
+    function clearStories() {
+        while (storiesSection.firstChild) {
+            storiesSection.removeChild(storiesSection.firstChild);
+        }
+    }
+
+
+    // --- Infinite Scrolling ---
+    function loadPosts() {
+        if (loading) return;
+        loading = true;
+
+        // Simulate fetching posts (replace with actual API call)
+        fetchPosts(page, limit)
+            .then(posts => {
+                posts.forEach(post => {
+                    const postDiv = document.createElement('div');
+                    postDiv.classList.add('post');
+                    postDiv.innerHTML = `
+                        <p class="post-content">${post.content}</p>
+                        <p class="post-timestamp">${post.timestamp}</p>
+                    `;
+                    newsfeed.appendChild(postDiv);
+                });
+
+                page++;
+                loading = false;
+            })
+            .catch(error => {
+                console.error("Error fetching posts:", error);
+                loading = false;
+            });
+    }
+
+    // Dummy fetchPosts function (replace with actual API call)
+    async function fetchPosts(page, limit) {
+        // Simulate API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Generate dummy posts
+        const dummyPosts = [];
+        for (let i = 0; i < limit; i++) {
+            const postNumber = page * limit + i + 1;
+            dummyPosts.push({
+                content: `This is dummy post #${postNumber}`,
+                timestamp: new Date().toLocaleString()
+            });
+        }
+        return dummyPosts;
+    }
+
+
+    // Initial load
+    loadPosts();
+
+    // Scroll event listener for infinite scrolling
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+            loadPosts();
+        }
+    });
+
+    // Close modal if clicked outside
+    window.addEventListener('click', (event) => {
+        if (event.target === createPostModal) {
+            createPostModal.style.display = 'none';
+            emojiPicker.style.display = 'none'; // Hide emoji picker
+        }
+    });
+});
+
+ 
